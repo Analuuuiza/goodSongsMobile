@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import axios from "axios";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
-const CadastroMusica: React.FC = () => {
+function CadastroMusica(): React.JSX.Element {
     const [musicas, setMusicas] = useState<Musica[]>([]);
     const [titulo, setTitulo] = useState<string>('');
     const [duracao, setDuracao] = useState<string>('');
@@ -12,241 +12,240 @@ const CadastroMusica: React.FC = () => {
     const [ano_lancamento, setAno_lancamento] = useState<string>('');
     const [album, setAlbum] = useState<string>('');
 
-        try{
-        const formData = new FormData();
-        formData.append('titulo', titulo);
-        formData.append('duracao', duracao);
-        formData.append('artista', artista);
-        formData.append('genero', genero);
-        formData.append('nacionalidade', nacionalidade);
-        formData.append('ano_lancamento', ano_lancamento);
-        formData.append('album', album);
-        
+    const [isHovered, setIsHovered] = useState(false);
+    const [isButton1Pressed, setIsButton1Pressed] = useState(false);
 
-        
-        const response = await axios.post('http://10.137.11.229:8000/api/cadastros', formData ,{
-            headers: {
-                'Content-Type': 'multipart/form-data'
+    const handleButton1Press = () => {
+        setIsButton1Pressed(true);
+    };
+
+    const handleButton2Press = () => {
+        setIsButton1Pressed(false);
+    };
+    
+        const CadastroMusica = async () => {
+            try {
+                const formData = new FormData();
+                formData.append('titulo', titulo);
+                formData.append('duracao', duracao);
+                formData.append('artista', artista);
+                formData.append('genero', genero);
+                formData.append('nacionalidade', nacionalidade);
+                formData.append('ano_lancamento', ano_lancamento);
+                formData.append('album', album);
+    
+                console.log(formData);
+                const response = await axios.post('http://10.137.11.224:8000/api/musica/cadastrarMusica', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                if (response.status == 200) {
+                        console.log("cadastrado")
+                }
+                else {
+                    console.log("Cliente não cadastrado");
+                }
+            } catch (error) {
+                console.log(error);
             }
-        });
-
-    }catch(error) {
-            console.log(error);
         }
-
-    }
-
     return (
         <View style={styles.container}>
-            <StatusBar backgroundColor="#FFE337" barStyle="light-content" />
-            <View style={styles.header}>
+            <View style={styles.containerHeader}>
+
+                <Text style={styles.message}>Good Songs</Text>
             </View>
-           <ScrollView>
-            <View style={styles.form}>
-                <Text style={styles.title}>Cadastrar Músicas</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Título"
-                    value={titulo}
-                    onChangeText={setTitulo} 
-                    />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Duração"
-                    value={duracao}
-                    onChangeText={setDuracao} 
-                    />
-                <TextInput 
-                    style={styles.input}
-                    placeholder="Artista"
-                    value={artista}
-                    onChangeText={setArtista} 
-                    multiline 
-                    />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Gênero"
-                    value={genero}
-                    onChangeText={setGenero} 
-                    multiline 
-                    />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Nacionalidade"
-                    value={nacionalidade}
-                    onChangeText={setNacionalidade} 
-                    multiline 
-                    />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Ano de Lançamento"
-                    value={ano_lancamento}
-                    onChangeText={setAno_lancamento} 
-                    multiline 
-                    />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Álbum"
-                    value={album}
-                    onChangeText={setAlbum} 
-                    multiline 
-                    />
 
-                <View style={styles.alinhamentoImagemSelecionada}>
-                    {imagem ? <Image source={{ uri: imagem }} style={styles.imagemSelecionada} /> : null}
-                </View>
-                <TouchableOpacity style={styles.imageButton} onPress={selecionarImagem}>
-                    <Text style={styles.imageButtonText}>Selecionar Imagem</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.imageButton} onPress={abrirCamera}>
-                    <Text style={styles.imageButtonText}>Tirar Foto</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={cadastrarCliente}>
-                    <Text style={styles.buttonText}>Cadastrar Cliente</Text>
-                </TouchableOpacity>
+            <View style={styles.containerForm}>
+
+
+                   {/* <View style={styles.buttonEntrar}>
+                        <TouchableOpacity
+                            style={[styles.button, isButton1Pressed ? styles.buttonPressed : null]}
+                            onPress={handleButton1Press}
+                        >
+                            <Text style={styles.buttonText}>Cadastro</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.button, !isButton1Pressed ? styles.buttonPressed : null]}
+                            onPress={handleButton2Press}
+                        >
+                            <Text style={styles.buttonText}>Listagem</Text>
+                        </TouchableOpacity>
+                    </View>
+
+    */ }
+
+                    <TextInput
+                        placeholder="Título"
+                        placeholderTextColor={'#fff'}
+                        style={styles.input}
+                        value={titulo}
+                        onChangeText={setTitulo}
+                    />
+                    <TextInput
+                        placeholder="Duração"
+                        placeholderTextColor={'#fff'}
+                        style={styles.input}
+                        value={duracao}
+                        onChangeText={setDuracao}
+                    />
+                    <TextInput
+                        placeholder="Artista"
+                        placeholderTextColor={'#fff'}
+                        style={styles.input}
+                        value={artista}
+                        onChangeText={setArtista}
+                    />
+                    <TextInput
+                        placeholder="Gênero"
+                        placeholderTextColor={'#fff'}
+                        style={styles.input}
+                        value={genero}
+                        onChangeText={setGenero}
+                    />
+                    <TextInput
+                        placeholder="Nacionalidade"
+                        placeholderTextColor={'#fff'}
+                        style={styles.input}
+                        value={nacionalidade}
+                        onChangeText={setNacionalidade}
+                    />
+                    <TextInput
+                        placeholder="Ano de Lançamento"
+                        placeholderTextColor={'#fff'}
+                        style={styles.input}
+                        value={ano_lancamento}
+                        onChangeText={setAno_lancamento}
+                    /> 
+                    <TextInput
+                        placeholder="Álbum"
+                        placeholderTextColor={'#fff'}
+                        style={styles.input}
+                        value={album}
+                        onChangeText={setAlbum}
+                        
+                    /> 
+                    
+
+                    <TouchableOpacity onPress={CadastroMusica} style={styles.buttonll}><Text style={styles.buttonllText}>Cadastrar</Text></TouchableOpacity>
+                
             </View>
-            </ScrollView>
-            <View style={styles.footer}>
-            <TouchableOpacity>
-                <Image 
-                source={require('../assets/image/home.png')}
-                style={styles.footerIcon}
-                />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-                <Image 
-                source={require('../assets/image/pedido.png')}
-                style={styles.footerIcon}
-                />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-                <Image 
-                source={require('../assets/image/perfil.png')}
-                style={styles.footerIcon}
-                />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-                <Image 
-                source={require('../assets/image/menu.png')}
-                style={styles.footerIcon}
-                />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-                <Image 
-                source={require('../assets/image/iconC.png')}
-                style={styles.footerIcon}
-                />
-            </TouchableOpacity>
-        </View>
         </View>
     );
-    
+}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFE337'
+        backgroundColor: '#002f6c'
     },
-    perfil: {
-        width: 50,
-        height: 50,
-        left: 165,
+    containerHeader: {
+        marginTop: '14%',
+        marginBottom: '8%',
+        paddingStart: '5%',
     },
-    errorText: {
-        color: '#84349c',
-        marginBottom: 5,
-    },
-    title: {
-        fontSize: 20,
+    message: {
+        fontSize: 28,
         fontWeight: 'bold',
-        marginVertical: 3,
-        color: '#84349c',
-        left: 95,
-        marginBottom: 10
+        color: '#fff',
+        textAlign: 'center'
     },
-    header: {
-        backgroundColor: '#f3bc04',
-        alignItems: 'center'
+    buttonPressed: {
+        backgroundColor: '#002f6c',
     },
-    image: {
-        width: 500,
-        height: 110,
-        borderRadius: 70
-    },
-    imagemF: {
+    containerForm: {
+        backgroundColor: '#002f6c',
         flex: 1,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        paddingStart: '5%',
+        paddingEnd: '5%',
+        //justifyContent: 'center'
     },
-    footerIcon: {
-        width: 30,
-        height: 30
-    },
-    headerText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'white'
-    },
-    form: {
-        padding: 10,
-        backgroundColor: '#FFE337',
-        marginBottom: 10,
-        marginTop: 70,
-        borderRadius: 20
-    },
-    footer: {
-        borderTopWidth: 0.2,
-        backgroundColor: '#F7E855',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+    logoContainer: {
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 10,
-        marginTop: 20
+        marginBottom: 20,
+    },
+    logo: {
+        width: 150,
+        height: 150,
     },
     input: {
-        height: 40,
-        borderColor: 'black',
         borderWidth: 1,
-        marginBottom: 10,
+        borderColor: 'grey', // Cor da borda
+        backgroundColor: '#1f487e', // Cor de fundo
+        height: 50,
+        marginBottom: 16,
+        fontSize: 18,
+        paddingHorizontal: 10,
+        borderRadius: 30,
+        paddingLeft: 25,
+
+        // Adiciona um preenchimento horizontal,
+    },
+    inputPassword: {
+        borderWidth: 2,
+        borderColor: 'grey', // Cor da borda
+        backgroundColor: '#002f6c', // Cor de fundo
+        height: 50,
+        marginBottom: 12,
+        fontSize: 20,
         paddingHorizontal: 10,
         borderRadius: 10,
-        backgroundColor: '#b47cc4'
-    },
-    imageButton: {
-        backgroundColor: '#84349c',
-        padding: 10,
-        borderRadius:20,
-        alignItems: 'center',
-        marginBottom: 10,
+        paddingLeft: 25,
         marginTop: 10
-    },
-    imageButtonText: {
-        color: 'black',
-        fontWeight: 'bold'
-    },
-    imagemSelecionada: {
-        width: 200,
-        height: 200,
-        resizeMode: 'cover',
-        borderRadius: 5,
-        marginBottom: 10
-    },
-    alinhamentoImagemSelecionada: {
-        alignItems: 'center'
+        // Adiciona um preenchimento horizontal,
+
     },
     button: {
-        backgroundColor: '#84349c',
-        padding: 10,
-        borderRadius: 20,
+        flex: 1, // Distribui igualmente o espaço disponível entre os botões
+        backgroundColor: 'grey',
+        borderRadius: 6,
+        paddingVertical: 11,
+        justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 10,
-        marginTop: 10
+        marginLeft: 3, // Adiciona margem à esquerda do segundo botão
+        marginRight: 3, // Adiciona margem à direita do primeiro botão
     },
     buttonText: {
-        color: 'black',
-        fontWeight: 'bold'
+        color: '#FFF',
+        fontSize: 18,
+        fontWeight: 'bold',
     },
+    buttonRegister: {
+        marginTop: 14,
+        alignSelf: 'center',
+    }, buttonHovered: {
+        backgroundColor: 'red', // Cor quando o mouse passa sobre o botão
+    },
+    registerText: {
+        color: '#a1a1a1'
+    },
+    buttonEntrar: {
+        backgroundColor: 'grey',
+        height: 50,
+        borderRadius: 6,
+        flexDirection: 'row',
+        padding: 1,
+        justifyContent: 'center', // Centraliza os itens na horizontal
+        alignItems: 'center'
+    }
+    ,
+    buttonll: {
+        backgroundColor: '#fff',
+        height: 45,
+        borderRadius: 20,
+        justifyContent: 'center', // Centraliza os itens na horizontal
+        alignItems: 'center',
+        marginTop: 10
+    },
+    buttonllText: {
+        color: '#002f6c',
+        fontSize: 20
+    }
 });
 
 export default CadastroMusica;
