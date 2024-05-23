@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 function CadastroMusica(): React.JSX.Element {
     const [musicas, setMusicas] = useState<Musica[]>([]);
@@ -11,6 +12,7 @@ function CadastroMusica(): React.JSX.Element {
     const [nacionalidade, setNacionalidade] = useState<string>('');
     const [ano_lancamento, setAno_lancamento] = useState<string>('');
     const [album, setAlbum] = useState<string>('');
+    const colorInput = '#acacb7'
 
     const [isHovered, setIsHovered] = useState(false);
     const [isButton1Pressed, setIsButton1Pressed] = useState(false);
@@ -22,6 +24,8 @@ function CadastroMusica(): React.JSX.Element {
     const handleButton2Press = () => {
         setIsButton1Pressed(false);
     };
+
+  
     
         const CadastroMusica = async () => {
             try {
@@ -35,13 +39,14 @@ function CadastroMusica(): React.JSX.Element {
                 formData.append('album', album);
     
                 console.log(formData);
-                const response = await axios.post('http://10.137.11.224:8000/api/musica/cadastrarMusica', formData, {
+                const response = await axios.post('http://10.137.11.222:8000/api/musica/cadastroMusica', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                if (response.status == 200) {
-                        console.log("cadastrado")
+                if (response.status === 200) {
+                      
+                        console.log(response.data)
                 }
                 else {
                     console.log("Cliente não cadastrado");
@@ -59,8 +64,9 @@ function CadastroMusica(): React.JSX.Element {
 
             <View style={styles.containerForm}>
 
+                <ScrollView style={styles.card}>
 
-                   {/* <View style={styles.buttonEntrar}>
+                    {/* <View style={styles.buttonEntrar}>
                         <TouchableOpacity
                             style={[styles.button, isButton1Pressed ? styles.buttonPressed : null]}
                             onPress={handleButton1Press}
@@ -77,60 +83,72 @@ function CadastroMusica(): React.JSX.Element {
 
     */ }
 
+
                     <TextInput
-                        placeholder="Título"
-                        placeholderTextColor={'#fff'}
+                        placeholder="Titulo"
+                        placeholderTextColor={colorInput}
                         style={styles.input}
                         value={titulo}
                         onChangeText={setTitulo}
                     />
                     <TextInput
                         placeholder="Duração"
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={colorInput}
                         style={styles.input}
                         value={duracao}
                         onChangeText={setDuracao}
                     />
                     <TextInput
                         placeholder="Artista"
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={colorInput}
                         style={styles.input}
                         value={artista}
                         onChangeText={setArtista}
                     />
                     <TextInput
-                        placeholder="Gênero"
-                        placeholderTextColor={'#fff'}
+                        placeholder="Genero"
+                        placeholderTextColor={colorInput}
                         style={styles.input}
                         value={genero}
                         onChangeText={setGenero}
                     />
                     <TextInput
                         placeholder="Nacionalidade"
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={colorInput}
                         style={styles.input}
                         value={nacionalidade}
                         onChangeText={setNacionalidade}
                     />
-                    <TextInput
-                        placeholder="Ano de Lançamento"
-                        placeholderTextColor={'#fff'}
-                        style={styles.input}
-                        value={ano_lancamento}
-                        onChangeText={setAno_lancamento}
-                    /> 
-                    <TextInput
-                        placeholder="Álbum"
-                        placeholderTextColor={'#fff'}
-                        style={styles.input}
-                        value={album}
-                        onChangeText={setAlbum}
-                        
-                    /> 
-                    
 
-                    <TouchableOpacity onPress={CadastroMusica} style={styles.buttonll}><Text style={styles.buttonllText}>Cadastrar</Text></TouchableOpacity>
-                
+                    <View style={styles.row}>
+                    <TextInput
+                            placeholder="Album"
+                            placeholderTextColor={colorInput}
+                            style={styles.inputAlbum}
+                            value={album}
+                            onChangeText={setAlbum}
+                        />
+                        <TextInput
+                            placeholder="Ano de Lançamento"
+                            placeholderTextColor={colorInput}
+                            style={styles.inputDate}
+                           
+                            value={ano_lancamento}
+                            onChangeText={setAno_lancamento}
+                        />
+                      
+
+                    </View >
+
+                    <TouchableOpacity style={styles.buttonll}
+                        onPress={CadastroMusica}><Text style={styles.buttonllText}>Cadastrar</Text></TouchableOpacity>
+
+
+
+
+
+
+                </ScrollView>
             </View>
         </View>
     );
@@ -139,12 +157,11 @@ function CadastroMusica(): React.JSX.Element {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#002f6c'
+        backgroundColor: '#292838'
     },
     containerHeader: {
-        marginTop: '14%',
-        marginBottom: '8%',
-        paddingStart: '5%',
+        marginTop: '12%',
+        paddingStart: '0%',
     },
     message: {
         fontSize: 28,
@@ -156,12 +173,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#002f6c',
     },
     containerForm: {
-        backgroundColor: '#002f6c',
+        backgroundColor: '#292838',
         flex: 1,
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
-        paddingStart: '5%',
-        paddingEnd: '5%',
+        paddingStart: '2%',
+        paddingEnd: '2%',
         //justifyContent: 'center'
     },
     logoContainer: {
@@ -173,18 +188,63 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
     },
+    title: {
+        fontSize: 20,
+        marginTop: 30, margin: 30,
+        color: '#fff',
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
     input: {
-        borderWidth: 1,
-        borderColor: 'grey', // Cor da borda
-        backgroundColor: '#1f487e', // Cor de fundo
+        backgroundColor: '#4a4956', // Cor de fundo
         height: 50,
-        marginBottom: 16,
-        fontSize: 18,
+        marginBottom: 12,
+        fontSize: 20,
         paddingHorizontal: 10,
-        borderRadius: 30,
+        borderRadius: 10,
         paddingLeft: 25,
 
         // Adiciona um preenchimento horizontal,
+
+    },
+    inputDate: {
+        backgroundColor: '#4a4956', // Cor de fundo
+        height: 50,
+        marginBottom: 12,
+        fontSize: 15,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        paddingLeft: 25,
+        width: "58%",
+        marginLeft:'auto'
+       
+
+        // Adiciona um preenchimento horizontal,
+
+    }, inputAlbum: {
+        backgroundColor: '#4a4956', // Cor de fundo
+        height: 50,
+        marginBottom: 12,
+        fontSize: 20,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        paddingLeft: 'auto',
+        width: '40%',
+        
+        
+        
+
+        // Adiciona um preenchimento horizontal,
+
+    },
+    row: {
+        flexDirection: 'row'
+    }, 
+    card: {
+        padding: 20,
+        marginTop: 100,
+        borderRadius: 15,
+        marginBottom: 40
     },
     inputPassword: {
         borderWidth: 2,
@@ -236,8 +296,8 @@ const styles = StyleSheet.create({
     ,
     buttonll: {
         backgroundColor: '#fff',
-        height: 45,
-        borderRadius: 20,
+        height: 50,
+        borderRadius: 6,
         justifyContent: 'center', // Centraliza os itens na horizontal
         alignItems: 'center',
         marginTop: 10
