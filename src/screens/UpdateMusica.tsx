@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import axios from 'axios';
+import Footer from '../components/Footer';
 
 function UpdateMusica(): React.JSX.Element {
 
@@ -51,7 +52,7 @@ function UpdateMusica(): React.JSX.Element {
             formData.append('ano_lancamento', ano_lancamento);
             formData.append('album', album);
 
-            const response = await axios.put('http://10.137.11.222:8000/api/musica/atualizarMusica', formData, {
+            const response = await axios.put('http://10.137.11.222:8000/api/musica/atualizarMusica/${id}', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -139,6 +140,8 @@ function UpdateMusica(): React.JSX.Element {
             <TouchableOpacity style={styles.button} onPress={handleDelete}>
                 <Text style={styles.buttonText}>Excluir</Text>
             </TouchableOpacity>
+
+            <Footer/>
         </View>
     );
 }

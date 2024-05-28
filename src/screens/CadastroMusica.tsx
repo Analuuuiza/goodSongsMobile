@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import Footer from '../components/Footer';
 
 function CadastroMusica(): React.JSX.Element {
     const [musicas, setMusicas] = useState<Musica[]>([]);
@@ -149,6 +150,8 @@ function CadastroMusica(): React.JSX.Element {
 
 
                 </ScrollView>
+
+                <Footer/>
             </View>
         </View>
     );

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 
 
 import { FlatList, Image, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import Footer from "../components/Footer";
 
 
 interface Musica {
@@ -30,8 +31,6 @@ const renderItem = ({ item }: { item:Musica}) => (
          {item.genero}
         
         </View>
-
-       
    
 );
 
@@ -47,7 +46,7 @@ function VizualizarMusica(): React.JSX.Element {
 
     const listarMusicas = async () => {
         try {
-            const response = await axios.get('http://10.137.11.223:8000/api/vizualizar/produtos');
+            const response = await axios.get('http://10.137.11.222:8000/api/musica/retornarTodasMusicas');
             if (response.status === 200) {
                 setMusicas(response.data); 
                  console.log(response.data);
@@ -59,19 +58,16 @@ function VizualizarMusica(): React.JSX.Element {
         }
     }
 
-  
-
-    
-
     return (
         <View style={styles.container}>
              <FlatList
                 showsVerticalScrollIndicator={false}
                 data={musicas}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.titulo}
+                keyExtractor={(item) => item.id.toString()}
                
             />
+            <Footer/>
         </View> 
               
 );
