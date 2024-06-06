@@ -1,28 +1,24 @@
 import React, { JSXElementConstructor } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { Text, View } from 'react-native';
+import VisualizarMusica from './src/screens/VisualizarMusica';
+import Editar from './src/screens/Editar';
 import { NavigationContainer } from '@react-navigation/native';
-import PesquisarMusica from './src/screens/PesquisarMusica';
-import CadastroMusica from './src/screens/CadastroMusica';
-import VizualizarMusica from './src/screens/VizualizarMusica';
+import { createStackNavigator } from '@react-navigation/stack';
+import Cadastro from './src/screens/Cadastro';
 
 const Stack = createStackNavigator();
 
-function App(): React.JSX.Element {
+function App():JSX.Element{
 
-  return (
+  return(
     <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name='home' component={CadastroMusica} 
-          options={{ headerShown: false }}/>
+    <Stack.Navigator>
+    <Stack.Screen name='list' component={VisualizarMusica} options={{headerShown:false}} />
+      <Stack.Screen name='cadastro' component={Cadastro} options={{headerShown:false}} />
+      <Stack.Screen name='update' component={Editar} options={{headerShown:false}} />
+    </Stack.Navigator>
+  </NavigationContainer>
 
-          <Stack.Screen name='list' component={VizualizarMusica} 
-          options={{ headerShown: false }}/>
-
-          <Stack.Screen name='lupa' component={PesquisarMusica} 
-          options={{ headerShown: false }}/>
-
-        </Stack.Navigator>
-    </NavigationContainer>
   );
 }
 
