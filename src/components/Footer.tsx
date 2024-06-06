@@ -9,8 +9,8 @@ function Footer(): React.JSX.Element{
     const navigation = useNavigation();
     return(
         <View style={styles.footer}>
-           <TouchableOpacity onPress={()=>navigation.navigate('home')}>
-            <Image source={require('../assets/image/home.png') } style={styles.footerIcon}/>
+           <TouchableOpacity onPress={()=>navigation.navigate('welcome')}>
+            <Image source={require('../assets/image/welcome.png') } style={styles.footerIcon}/>
            </TouchableOpacity>
            <TouchableOpacity onPress={()=>navigation.navigate('list')}>
             <Image source={require('../assets/image/list.png') } style={styles.footerIcon} />
